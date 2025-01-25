@@ -1,9 +1,0 @@
-{
-	"name": "azure-healthcare-adf",
-	"location": "eastus",
-	"identity": {
-		"type": "SystemAssigned",
-		"principalId": "1c767830-63ab-4b3d-ae20-723f6e8b1a3b",
-		"tenantId": "51dae7ac-ac25-4f4d-a66b-b03c37355718"
-	}
-}
