@@ -1,0 +1,29 @@
+{
+	"name": "hosa_providers_db",
+	"properties": {
+		"linkedServiceName": {
+			"referenceName": "AzureSqlDatabase_hosa_ls",
+			"type": "LinkedServiceReference"
+		},
+		"folder": {
+			"name": "hospital-a"
+		},
+		"annotations": [],
+		"type": "AzureSqlTable",
+		"schema": [
+			{
+				"name": "DeptID",
+				"type": "nvarchar"
+			},
+			{
+				"name": "Name",
+				"type": "nvarchar"
+			}
+		],
+		"typeProperties": {
+			"schema": "dbo",
+			"table": "providers"
+		}
+	},
+	"type": "Microsoft.DataFactory/factories/datasets"
+}

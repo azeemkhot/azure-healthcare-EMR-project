@@ -1,0 +1,29 @@
+{
+	"name": "hosb_providers_db",
+	"properties": {
+		"linkedServiceName": {
+			"referenceName": "AzureSqlDatabase1_hosb_ls",
+			"type": "LinkedServiceReference"
+		},
+		"folder": {
+			"name": "hospital-b"
+		},
+		"annotations": [],
+		"type": "AzureSqlTable",
+		"schema": [
+			{
+				"name": "DeptID",
+				"type": "nvarchar"
+			},
+			{
+				"name": "Name",
+				"type": "nvarchar"
+			}
+		],
+		"typeProperties": {
+			"schema": "dbo",
+			"table": "providers"
+		}
+	},
+	"type": "Microsoft.DataFactory/factories/datasets"
+}

@@ -1,0 +1,29 @@
+{
+	"name": "hosa_transactions_db",
+	"properties": {
+		"linkedServiceName": {
+			"referenceName": "AzureSqlDatabase_hosa_ls",
+			"type": "LinkedServiceReference"
+		},
+		"folder": {
+			"name": "hospital-a"
+		},
+		"annotations": [],
+		"type": "AzureSqlTable",
+		"schema": [
+			{
+				"name": "DeptID",
+				"type": "nvarchar"
+			},
+			{
+				"name": "Name",
+				"type": "nvarchar"
+			}
+		],
+		"typeProperties": {
+			"schema": "dbo",
+			"table": "transactions"
+		}
+	},
+	"type": "Microsoft.DataFactory/factories/datasets"
+}
