@@ -1,0 +1,20 @@
+{
+	"name": "hc_adb_ls",
+	"type": "Microsoft.DataFactory/factories/linkedservices",
+	"properties": {
+		"annotations": [],
+		"type": "AzureDatabricks",
+		"typeProperties": {
+			"domain": "https://adb-2390693572572844.4.azuredatabricks.net",
+			"accessToken": {
+				"type": "AzureKeyVaultSecret",
+				"store": {
+					"referenceName": "hc_kv_ls",
+					"type": "LinkedServiceReference"
+				},
+				"secretName": "azure-databricks-kv-pat"
+			},
+			"existingClusterId": "0120-153742-qwrv4fif"
+		}
+	}
+}

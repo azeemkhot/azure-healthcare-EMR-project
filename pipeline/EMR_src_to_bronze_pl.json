@@ -1,0 +1,266 @@
+{
+	"name": "EMR_src_to_bronze_pl",
+	"properties": {
+		"activities": [
+			{
+				"name": "Lkp_EMR_Configs",
+				"type": "Lookup",
+				"dependsOn": [],
+				"policy": {
+					"timeout": "0.12:00:00",
+					"retry": 0,
+					"retryIntervalInSeconds": 30,
+					"secureOutput": false,
+					"secureInput": false
+				},
+				"userProperties": [],
+				"typeProperties": {
+					"source": {
+						"type": "DelimitedTextSource",
+						"storeSettings": {
+							"type": "AzureBlobFSReadSettings",
+							"recursive": true,
+							"enablePartitionDiscovery": false
+						},
+						"formatSettings": {
+							"type": "DelimitedTextReadSettings"
+						}
+					},
+					"dataset": {
+						"referenceName": "adls_flat_file_ds",
+						"type": "DatasetReference",
+						"parameters": {
+							"container": "configs",
+							"file_path": "emr",
+							"file_name": "load_config.csv"
+						}
+					},
+					"firstRowOnly": false
+				}
+			},
+			{
+				"name": "ForEach1",
+				"type": "ForEach",
+				"dependsOn": [
+					{
+						"activity": "Lkp_EMR_Configs",
+						"dependencyConditions": [
+							"Succeeded"
+						]
+					}
+				],
+				"userProperties": [],
+				"typeProperties": {
+					"items": {
+						"value": "@activity('Lkp_EMR_Configs').output.value\n",
+						"type": "Expression"
+					},
+					"isSequential": false,
+					"batchCount": 5,
+					"activities": [
+						{
+							"name": "File_Exists",
+							"type": "GetMetadata",
+							"dependsOn": [],
+							"policy": {
+								"timeout": "0.12:00:00",
+								"retry": 0,
+								"retryIntervalInSeconds": 30,
+								"secureOutput": false,
+								"secureInput": false
+							},
+							"userProperties": [],
+							"typeProperties": {
+								"dataset": {
+									"referenceName": "adls_parquet_ds",
+									"type": "DatasetReference",
+									"parameters": {
+										"container": "bronze",
+										"file_path": {
+											"value": "@item().targetpath",
+											"type": "Expression"
+										},
+										"file_name": {
+											"value": "@split(item().tablename,'.')[1]",
+											"type": "Expression"
+										}
+									}
+								},
+								"fieldList": [
+									"exists"
+								],
+								"storeSettings": {
+									"type": "AzureBlobFSReadSettings",
+									"recursive": true,
+									"enablePartitionDiscovery": false
+								},
+								"formatSettings": {
+									"type": "ParquetReadSettings"
+								}
+							}
+						},
+						{
+							"name": "If Condition1",
+							"type": "IfCondition",
+							"dependsOn": [
+								{
+									"activity": "File_Exists",
+									"dependencyConditions": [
+										"Succeeded"
+									]
+								}
+							],
+							"userProperties": [],
+							"typeProperties": {
+								"expression": {
+									"value": "@activity('File_Exists').output.exists\n",
+									"type": "Expression"
+								},
+								"ifTrueActivities": [
+									{
+										"name": "Archive File",
+										"type": "Copy",
+										"dependsOn": [],
+										"policy": {
+											"timeout": "0.12:00:00",
+											"retry": 0,
+											"retryIntervalInSeconds": 30,
+											"secureOutput": false,
+											"secureInput": false
+										},
+										"userProperties": [],
+										"typeProperties": {
+											"source": {
+												"type": "ParquetSource",
+												"storeSettings": {
+													"type": "AzureBlobFSReadSettings",
+													"recursive": true,
+													"enablePartitionDiscovery": false
+												},
+												"formatSettings": {
+													"type": "ParquetReadSettings"
+												}
+											},
+											"sink": {
+												"type": "ParquetSink",
+												"storeSettings": {
+													"type": "AzureBlobFSWriteSettings"
+												},
+												"formatSettings": {
+													"type": "ParquetWriteSettings"
+												}
+											},
+											"enableStaging": false,
+											"translator": {
+												"type": "TabularTranslator",
+												"typeConversion": true,
+												"typeConversionSettings": {
+													"allowDataTruncation": true,
+													"treatBooleanAsNumber": false
+												}
+											}
+										},
+										"inputs": [
+											{
+												"referenceName": "adls_parquet_ds",
+												"type": "DatasetReference",
+												"parameters": {
+													"container": "bronze",
+													"file_path": {
+														"value": "@item().targetpath",
+														"type": "Expression"
+													},
+													"file_name": "@split(item().tablename,'.')[1]"
+												}
+											}
+										],
+										"outputs": [
+											{
+												"referenceName": "adls_parquet_ds",
+												"type": "DatasetReference",
+												"parameters": {
+													"container": "bronze",
+													"file_path": {
+														"value": "@concat(item().targetpath,'/archive/',formatDateTime(utcNow(),'yyyy'),'/',formatDateTime(utcNow(),'%M'),'/',formatDateTime(utcNow(),'%d'))",
+														"type": "Expression"
+													},
+													"file_name": "@split(item().tablename,'.')[1]"
+												}
+											}
+										]
+									}
+								]
+							}
+						},
+						{
+							"name": "If Condition3",
+							"type": "IfCondition",
+							"dependsOn": [
+								{
+									"activity": "If Condition1",
+									"dependencyConditions": [
+										"Succeeded"
+									]
+								}
+							],
+							"userProperties": [],
+							"typeProperties": {
+								"expression": {
+									"value": "@equals(item().is_active, '1')",
+									"type": "Expression"
+								},
+								"ifTrueActivities": [
+									{
+										"name": "Execute Pipeline",
+										"type": "ExecutePipeline",
+										"dependsOn": [],
+										"policy": {
+											"secureInput": false
+										},
+										"userProperties": [],
+										"typeProperties": {
+											"pipeline": {
+												"referenceName": "Load_from_EMR_pl",
+												"type": "PipelineReference"
+											},
+											"waitOnCompletion": true,
+											"parameters": {
+												"loadtype": {
+													"value": "@item().loadtype",
+													"type": "Expression"
+												},
+												"database": {
+													"value": "@item().database",
+													"type": "Expression"
+												},
+												"tablename": {
+													"value": "@item().tablename",
+													"type": "Expression"
+												},
+												"datasource": {
+													"value": "@item().datasource",
+													"type": "Expression"
+												},
+												"targetpath": {
+													"value": "@item().targetpath",
+													"type": "Expression"
+												},
+												"watermark": {
+													"value": "@item().watermark",
+													"type": "Expression"
+												}
+											}
+										}
+									}
+								]
+							}
+						}
+					]
+				}
+			}
+		],
+		"annotations": [],
+		"lastPublishTime": "2025-01-24T15:23:03Z"
+	},
+	"type": "Microsoft.DataFactory/factories/pipelines"
+}

@@ -1,0 +1,65 @@
+{
+	"name": "hosa_encounters",
+	"properties": {
+		"linkedServiceName": {
+			"referenceName": "AzureBlobStorage_ls",
+			"type": "LinkedServiceReference"
+		},
+		"folder": {
+			"name": "hospital-a"
+		},
+		"annotations": [],
+		"type": "DelimitedText",
+		"typeProperties": {
+			"location": {
+				"type": "AzureBlobStorageLocation",
+				"fileName": "encounters.csv",
+				"folderPath": "hospital-a",
+				"container": "temp"
+			},
+			"columnDelimiter": ",",
+			"escapeChar": "\\",
+			"firstRowAsHeader": true,
+			"quoteChar": "\""
+		},
+		"schema": [
+			{
+				"name": "EncounterID",
+				"type": "String"
+			},
+			{
+				"name": "PatientID",
+				"type": "String"
+			},
+			{
+				"name": "EncounterDate",
+				"type": "String"
+			},
+			{
+				"name": "EncounterType",
+				"type": "String"
+			},
+			{
+				"name": "ProviderID",
+				"type": "String"
+			},
+			{
+				"name": "DepartmentID",
+				"type": "String"
+			},
+			{
+				"name": "ProcedureCode",
+				"type": "String"
+			},
+			{
+				"name": "InsertedDate",
+				"type": "String"
+			},
+			{
+				"name": "ModifiedDate",
+				"type": "String"
+			}
+		]
+	},
+	"type": "Microsoft.DataFactory/factories/datasets"
+}
