@@ -1,0 +1,63 @@
+{
+	"$schema": "https://schema.management.azure.com/schemas/2015-01-01/deploymentParameters.json#",
+	"contentVersion": "1.0.0.0",
+	"parameters": {
+		"factoryName": {
+			"value": "azure-healthcare-adf"
+		},
+		"AzureBlobStorage_ls_connectionString": {
+			"value": ""
+		},
+		"AzureDataLakeStorage1_accountKey": {
+			"value": ""
+		},
+		"AzureDatabricksDeltaLake1_accessToken": {
+			"value": ""
+		},
+		"AzureSqlDatabase1_hosb_ls_password": {
+			"value": ""
+		},
+		"AzureSqlDatabase_hosa_ls_password": {
+			"value": ""
+		},
+		"EMR_sql_ls_password": {
+			"value": ""
+		},
+		"AzureDataLakeStorage1_properties_typeProperties_url": {
+			"value": "https://healthcareadls2.dfs.core.windows.net/"
+		},
+		"AzureSqlDatabase1_hosb_ls_properties_typeProperties_server": {
+			"value": "emr-a.database.windows.net"
+		},
+		"AzureSqlDatabase1_hosb_ls_properties_typeProperties_database": {
+			"value": "healthcare-emr-hospital-b"
+		},
+		"AzureSqlDatabase1_hosb_ls_properties_typeProperties_userName": {
+			"value": "sqladmin"
+		},
+		"AzureSqlDatabase_hosa_ls_properties_typeProperties_server": {
+			"value": "emr-a.database.windows.net"
+		},
+		"AzureSqlDatabase_hosa_ls_properties_typeProperties_database": {
+			"value": "healthcare-emr-hospital-a"
+		},
+		"AzureSqlDatabase_hosa_ls_properties_typeProperties_userName": {
+			"value": "sqladmin"
+		},
+		"EMR_sql_ls_properties_typeProperties_server": {
+			"value": "emr-a.database.windows.net"
+		},
+		"EMR_sql_ls_properties_typeProperties_database": {
+			"value": "@{linkedService().db_name}"
+		},
+		"EMR_sql_ls_properties_typeProperties_userName": {
+			"value": "sqladmin"
+		},
+		"hc_adb_ls_properties_typeProperties_existingClusterId": {
+			"value": "0120-153742-qwrv4fif"
+		},
+		"hc_kv_ls_properties_typeProperties_baseUrl": {
+			"value": "https://azure-hc-kv.vault.azure.net/"
+		}
+	}
+}

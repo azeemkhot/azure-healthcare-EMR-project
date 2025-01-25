@@ -1,0 +1,188 @@
+{
+	"$schema": "http://schema.management.azure.com/schemas/2015-01-01/deploymentTemplate.json#",
+	"contentVersion": "1.0.0.0",
+	"parameters": {
+		"factoryName": {
+			"type": "string",
+			"metadata": "Data Factory name",
+			"defaultValue": "azure-healthcare-adf"
+		},
+		"AzureBlobStorage_ls_connectionString": {
+			"type": "secureString",
+			"metadata": "Secure string for 'connectionString' of 'AzureBlobStorage_ls'"
+		},
+		"AzureDataLakeStorage1_accountKey": {
+			"type": "secureString",
+			"metadata": "Secure string for 'accountKey' of 'AzureDataLakeStorage1'"
+		},
+		"AzureDatabricksDeltaLake1_accessToken": {
+			"type": "secureString",
+			"metadata": "Secure string for 'accessToken' of 'AzureDatabricksDeltaLake1'"
+		},
+		"AzureSqlDatabase1_hosb_ls_password": {
+			"type": "secureString",
+			"metadata": "Secure string for 'password' of 'AzureSqlDatabase1_hosb_ls'"
+		},
+		"AzureSqlDatabase_hosa_ls_password": {
+			"type": "secureString",
+			"metadata": "Secure string for 'password' of 'AzureSqlDatabase_hosa_ls'"
+		},
+		"EMR_sql_ls_password": {
+			"type": "secureString",
+			"metadata": "Secure string for 'password' of 'EMR_sql_ls'"
+		},
+		"AzureDataLakeStorage1_properties_typeProperties_url": {
+			"type": "string",
+			"defaultValue": "https://healthcareadls2.dfs.core.windows.net/"
+		},
+		"AzureSqlDatabase1_hosb_ls_properties_typeProperties_server": {
+			"type": "string",
+			"defaultValue": "emr-a.database.windows.net"
+		},
+		"AzureSqlDatabase1_hosb_ls_properties_typeProperties_database": {
+			"type": "string",
+			"defaultValue": "healthcare-emr-hospital-b"
+		},
+		"AzureSqlDatabase1_hosb_ls_properties_typeProperties_userName": {
+			"type": "string",
+			"defaultValue": "sqladmin"
+		},
+		"AzureSqlDatabase_hosa_ls_properties_typeProperties_server": {
+			"type": "string",
+			"defaultValue": "emr-a.database.windows.net"
+		},
+		"AzureSqlDatabase_hosa_ls_properties_typeProperties_database": {
+			"type": "string",
+			"defaultValue": "healthcare-emr-hospital-a"
+		},
+		"AzureSqlDatabase_hosa_ls_properties_typeProperties_userName": {
+			"type": "string",
+			"defaultValue": "sqladmin"
+		},
+		"EMR_sql_ls_properties_typeProperties_server": {
+			"type": "string",
+			"defaultValue": "emr-a.database.windows.net"
+		},
+		"EMR_sql_ls_properties_typeProperties_database": {
+			"type": "string",
+			"defaultValue": "@{linkedService().db_name}"
+		},
+		"EMR_sql_ls_properties_typeProperties_userName": {
+			"type": "string",
+			"defaultValue": "sqladmin"
+		},
+		"hc_adb_ls_properties_typeProperties_existingClusterId": {
+			"type": "string",
+			"defaultValue": "0120-153742-qwrv4fif"
+		},
+		"hc_kv_ls_properties_typeProperties_baseUrl": {
+			"type": "string",
+			"defaultValue": "https://azure-hc-kv.vault.azure.net/"
+		},
+		"containerUri": {
+			"type": "string",
+			"metadata": "URI to storage account containing linked ARM templates"
+		},
+		"containerSasToken": {
+			"type": "string",
+			"metadata": "Sas token to storage account containing linked ARM templates"
+		}
+	},
+	"variables": {
+		"factoryId": "[concat('Microsoft.DataFactory/factories/', parameters('factoryName'))]"
+	},
+	"resources": [
+		{
+			"name": "azure-healthcare-adf_ArmTemplate_0",
+			"type": "Microsoft.Resources/deployments",
+			"apiVersion": "2024-03-01",
+			"properties": {
+				"mode": "incremental",
+				"templateLink": {
+					"uri": "[concat(parameters('containerUri'), '/ArmTemplate_0.json', parameters('containerSasToken'))]",
+					"contentVersion": "1.0.0.0"
+				},
+				"parameters": {
+					"factoryName": {
+						"value": "[parameters('factoryName')]"
+					},
+					"AzureBlobStorage_ls_connectionString": {
+						"value": "[parameters('AzureBlobStorage_ls_connectionString')]"
+					},
+					"AzureDataLakeStorage1_accountKey": {
+						"value": "[parameters('AzureDataLakeStorage1_accountKey')]"
+					},
+					"AzureDatabricksDeltaLake1_accessToken": {
+						"value": "[parameters('AzureDatabricksDeltaLake1_accessToken')]"
+					},
+					"AzureSqlDatabase1_hosb_ls_password": {
+						"value": "[parameters('AzureSqlDatabase1_hosb_ls_password')]"
+					},
+					"AzureSqlDatabase_hosa_ls_password": {
+						"value": "[parameters('AzureSqlDatabase_hosa_ls_password')]"
+					},
+					"EMR_sql_ls_password": {
+						"value": "[parameters('EMR_sql_ls_password')]"
+					},
+					"AzureDataLakeStorage1_properties_typeProperties_url": {
+						"value": "[parameters('AzureDataLakeStorage1_properties_typeProperties_url')]"
+					},
+					"AzureSqlDatabase1_hosb_ls_properties_typeProperties_server": {
+						"value": "[parameters('AzureSqlDatabase1_hosb_ls_properties_typeProperties_server')]"
+					},
+					"AzureSqlDatabase1_hosb_ls_properties_typeProperties_database": {
+						"value": "[parameters('AzureSqlDatabase1_hosb_ls_properties_typeProperties_database')]"
+					},
+					"AzureSqlDatabase1_hosb_ls_properties_typeProperties_userName": {
+						"value": "[parameters('AzureSqlDatabase1_hosb_ls_properties_typeProperties_userName')]"
+					},
+					"AzureSqlDatabase_hosa_ls_properties_typeProperties_server": {
+						"value": "[parameters('AzureSqlDatabase_hosa_ls_properties_typeProperties_server')]"
+					},
+					"AzureSqlDatabase_hosa_ls_properties_typeProperties_database": {
+						"value": "[parameters('AzureSqlDatabase_hosa_ls_properties_typeProperties_database')]"
+					},
+					"AzureSqlDatabase_hosa_ls_properties_typeProperties_userName": {
+						"value": "[parameters('AzureSqlDatabase_hosa_ls_properties_typeProperties_userName')]"
+					},
+					"EMR_sql_ls_properties_typeProperties_server": {
+						"value": "[parameters('EMR_sql_ls_properties_typeProperties_server')]"
+					},
+					"EMR_sql_ls_properties_typeProperties_database": {
+						"value": "[parameters('EMR_sql_ls_properties_typeProperties_database')]"
+					},
+					"EMR_sql_ls_properties_typeProperties_userName": {
+						"value": "[parameters('EMR_sql_ls_properties_typeProperties_userName')]"
+					},
+					"hc_kv_ls_properties_typeProperties_baseUrl": {
+						"value": "[parameters('hc_kv_ls_properties_typeProperties_baseUrl')]"
+					}
+				}
+			},
+			"dependsOn": []
+		},
+		{
+			"name": "azure-healthcare-adf_ArmTemplate_1",
+			"type": "Microsoft.Resources/deployments",
+			"apiVersion": "2024-03-01",
+			"properties": {
+				"mode": "incremental",
+				"templateLink": {
+					"uri": "[concat(parameters('containerUri'), '/ArmTemplate_1.json', parameters('containerSasToken'))]",
+					"contentVersion": "1.0.0.0"
+				},
+				"parameters": {
+					"factoryName": {
+						"value": "[parameters('factoryName')]"
+					},
+					"hc_adb_ls_properties_typeProperties_existingClusterId": {
+						"value": "[parameters('hc_adb_ls_properties_typeProperties_existingClusterId')]"
+					}
+				}
+			},
+			"dependsOn": [
+				"[resourceId('Microsoft.Resources/deployments', 'azure-healthcare-adf_ArmTemplate_0')]"
+			]
+		}
+	]
+}

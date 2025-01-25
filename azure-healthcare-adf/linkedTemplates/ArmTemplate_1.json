@@ -1,0 +1,2264 @@
+{
+	"$schema": "http://schema.management.azure.com/schemas/2015-01-01/deploymentTemplate.json#",
+	"contentVersion": "1.0.0.0",
+	"parameters": {
+		"factoryName": {
+			"type": "string",
+			"metadata": "Data Factory name",
+			"defaultValue": "azure-healthcare-adf"
+		},
+		"hc_adb_ls_properties_typeProperties_existingClusterId": {
+			"type": "string",
+			"defaultValue": "0120-153742-qwrv4fif"
+		}
+	},
+	"variables": {
+		"factoryId": "[concat('Microsoft.DataFactory/factories/', parameters('factoryName'))]"
+	},
+	"resources": [
+		{
+			"name": "[concat(parameters('factoryName'), '/hosa_transactions_db')]",
+			"type": "Microsoft.DataFactory/factories/datasets",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"linkedServiceName": {
+					"referenceName": "AzureSqlDatabase_hosa_ls",
+					"type": "LinkedServiceReference"
+				},
+				"folder": {
+					"name": "hospital-a"
+				},
+				"annotations": [],
+				"type": "AzureSqlTable",
+				"schema": [
+					{
+						"name": "DeptID",
+						"type": "nvarchar"
+					},
+					{
+						"name": "Name",
+						"type": "nvarchar"
+					}
+				],
+				"typeProperties": {
+					"schema": "dbo",
+					"table": "transactions"
+				}
+			},
+			"dependsOn": []
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/hosb_departments')]",
+			"type": "Microsoft.DataFactory/factories/datasets",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"linkedServiceName": {
+					"referenceName": "AzureBlobStorage_ls",
+					"type": "LinkedServiceReference"
+				},
+				"folder": {
+					"name": "hospital-b"
+				},
+				"annotations": [],
+				"type": "DelimitedText",
+				"typeProperties": {
+					"location": {
+						"type": "AzureBlobStorageLocation",
+						"fileName": "departments.csv",
+						"folderPath": "hospital-b",
+						"container": "temp"
+					},
+					"columnDelimiter": ",",
+					"escapeChar": "\\",
+					"firstRowAsHeader": true,
+					"quoteChar": "\""
+				},
+				"schema": [
+					{
+						"name": "DeptID",
+						"type": "String"
+					},
+					{
+						"name": "Name",
+						"type": "String"
+					}
+				]
+			},
+			"dependsOn": []
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/hosb_departments_db')]",
+			"type": "Microsoft.DataFactory/factories/datasets",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"linkedServiceName": {
+					"referenceName": "AzureSqlDatabase1_hosb_ls",
+					"type": "LinkedServiceReference"
+				},
+				"folder": {
+					"name": "hospital-b"
+				},
+				"annotations": [],
+				"type": "AzureSqlTable",
+				"schema": [
+					{
+						"name": "DeptID",
+						"type": "nvarchar"
+					},
+					{
+						"name": "Name",
+						"type": "nvarchar"
+					}
+				],
+				"typeProperties": {
+					"schema": "dbo",
+					"table": "departments"
+				}
+			},
+			"dependsOn": []
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/hosb_encounters')]",
+			"type": "Microsoft.DataFactory/factories/datasets",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"linkedServiceName": {
+					"referenceName": "AzureBlobStorage_ls",
+					"type": "LinkedServiceReference"
+				},
+				"folder": {
+					"name": "hospital-b"
+				},
+				"annotations": [],
+				"type": "DelimitedText",
+				"typeProperties": {
+					"location": {
+						"type": "AzureBlobStorageLocation",
+						"fileName": "encounters.csv",
+						"folderPath": "hospital-b",
+						"container": "temp"
+					},
+					"columnDelimiter": ",",
+					"escapeChar": "\\",
+					"firstRowAsHeader": true,
+					"quoteChar": "\""
+				},
+				"schema": [
+					{
+						"name": "EncounterID",
+						"type": "String"
+					},
+					{
+						"name": "PatientID",
+						"type": "String"
+					},
+					{
+						"name": "EncounterDate",
+						"type": "String"
+					},
+					{
+						"name": "EncounterType",
+						"type": "String"
+					},
+					{
+						"name": "ProviderID",
+						"type": "String"
+					},
+					{
+						"name": "DepartmentID",
+						"type": "String"
+					},
+					{
+						"name": "ProcedureCode",
+						"type": "String"
+					},
+					{
+						"name": "InsertedDate",
+						"type": "String"
+					},
+					{
+						"name": "ModifiedDate",
+						"type": "String"
+					}
+				]
+			},
+			"dependsOn": []
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/hosb_encounters_db')]",
+			"type": "Microsoft.DataFactory/factories/datasets",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"linkedServiceName": {
+					"referenceName": "AzureSqlDatabase1_hosb_ls",
+					"type": "LinkedServiceReference"
+				},
+				"folder": {
+					"name": "hospital-b"
+				},
+				"annotations": [],
+				"type": "AzureSqlTable",
+				"schema": [
+					{
+						"name": "DeptID",
+						"type": "nvarchar"
+					},
+					{
+						"name": "Name",
+						"type": "nvarchar"
+					}
+				],
+				"typeProperties": {
+					"schema": "dbo",
+					"table": "encounters"
+				}
+			},
+			"dependsOn": []
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/hosb_patients')]",
+			"type": "Microsoft.DataFactory/factories/datasets",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"linkedServiceName": {
+					"referenceName": "AzureBlobStorage_ls",
+					"type": "LinkedServiceReference"
+				},
+				"folder": {
+					"name": "hospital-b"
+				},
+				"annotations": [],
+				"type": "DelimitedText",
+				"typeProperties": {
+					"location": {
+						"type": "AzureBlobStorageLocation",
+						"fileName": "patients.csv",
+						"folderPath": "hospital-b",
+						"container": "temp"
+					},
+					"columnDelimiter": ",",
+					"escapeChar": "\\",
+					"firstRowAsHeader": true,
+					"quoteChar": "\""
+				},
+				"schema": [
+					{
+						"name": "ID",
+						"type": "String"
+					},
+					{
+						"name": "F_Name",
+						"type": "String"
+					},
+					{
+						"name": "L_Name",
+						"type": "String"
+					},
+					{
+						"name": "M_Name",
+						"type": "String"
+					},
+					{
+						"name": "SSN",
+						"type": "String"
+					},
+					{
+						"name": "PhoneNumber",
+						"type": "String"
+					},
+					{
+						"name": "Gender",
+						"type": "String"
+					},
+					{
+						"name": "DOB",
+						"type": "String"
+					},
+					{
+						"name": "Address",
+						"type": "String"
+					},
+					{
+						"name": "Updated_Date",
+						"type": "String"
+					}
+				]
+			},
+			"dependsOn": []
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/hosb_patients_db')]",
+			"type": "Microsoft.DataFactory/factories/datasets",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"linkedServiceName": {
+					"referenceName": "AzureSqlDatabase1_hosb_ls",
+					"type": "LinkedServiceReference"
+				},
+				"folder": {
+					"name": "hospital-b"
+				},
+				"annotations": [],
+				"type": "AzureSqlTable",
+				"schema": [
+					{
+						"name": "DeptID",
+						"type": "nvarchar"
+					},
+					{
+						"name": "Name",
+						"type": "nvarchar"
+					}
+				],
+				"typeProperties": {
+					"schema": "dbo",
+					"table": "patients"
+				}
+			},
+			"dependsOn": []
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/hosb_providers')]",
+			"type": "Microsoft.DataFactory/factories/datasets",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"linkedServiceName": {
+					"referenceName": "AzureBlobStorage_ls",
+					"type": "LinkedServiceReference"
+				},
+				"folder": {
+					"name": "hospital-b"
+				},
+				"annotations": [],
+				"type": "DelimitedText",
+				"typeProperties": {
+					"location": {
+						"type": "AzureBlobStorageLocation",
+						"fileName": "providers.csv",
+						"folderPath": "hospital-b",
+						"container": "temp"
+					},
+					"columnDelimiter": ",",
+					"escapeChar": "\\",
+					"firstRowAsHeader": true,
+					"quoteChar": "\""
+				},
+				"schema": [
+					{
+						"name": "ProviderID",
+						"type": "String"
+					},
+					{
+						"name": "FirstName",
+						"type": "String"
+					},
+					{
+						"name": "LastName",
+						"type": "String"
+					},
+					{
+						"name": "Specialization",
+						"type": "String"
+					},
+					{
+						"name": "DeptID",
+						"type": "String"
+					},
+					{
+						"name": "NPI",
+						"type": "String"
+					}
+				]
+			},
+			"dependsOn": []
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/hosb_providers_db')]",
+			"type": "Microsoft.DataFactory/factories/datasets",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"linkedServiceName": {
+					"referenceName": "AzureSqlDatabase1_hosb_ls",
+					"type": "LinkedServiceReference"
+				},
+				"folder": {
+					"name": "hospital-b"
+				},
+				"annotations": [],
+				"type": "AzureSqlTable",
+				"schema": [
+					{
+						"name": "DeptID",
+						"type": "nvarchar"
+					},
+					{
+						"name": "Name",
+						"type": "nvarchar"
+					}
+				],
+				"typeProperties": {
+					"schema": "dbo",
+					"table": "providers"
+				}
+			},
+			"dependsOn": []
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/hosb_transactions')]",
+			"type": "Microsoft.DataFactory/factories/datasets",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"linkedServiceName": {
+					"referenceName": "AzureBlobStorage_ls",
+					"type": "LinkedServiceReference"
+				},
+				"folder": {
+					"name": "hospital-b"
+				},
+				"annotations": [],
+				"type": "DelimitedText",
+				"typeProperties": {
+					"location": {
+						"type": "AzureBlobStorageLocation",
+						"fileName": "transactions.csv",
+						"folderPath": "hospital-b",
+						"container": "temp"
+					},
+					"columnDelimiter": ",",
+					"escapeChar": "\\",
+					"firstRowAsHeader": true,
+					"quoteChar": "\""
+				},
+				"schema": [
+					{
+						"name": "TransactionID",
+						"type": "String"
+					},
+					{
+						"name": "EncounterID",
+						"type": "String"
+					},
+					{
+						"name": "PatientID",
+						"type": "String"
+					},
+					{
+						"name": "ProviderID",
+						"type": "String"
+					},
+					{
+						"name": "DeptID",
+						"type": "String"
+					},
+					{
+						"name": "VisitDate",
+						"type": "String"
+					},
+					{
+						"name": "ServiceDate",
+						"type": "String"
+					},
+					{
+						"name": "PaidDate",
+						"type": "String"
+					},
+					{
+						"name": "VisitType",
+						"type": "String"
+					},
+					{
+						"name": "Amount",
+						"type": "String"
+					},
+					{
+						"name": "AmountType",
+						"type": "String"
+					},
+					{
+						"name": "PaidAmount",
+						"type": "String"
+					},
+					{
+						"name": "ClaimID",
+						"type": "String"
+					},
+					{
+						"name": "PayorID",
+						"type": "String"
+					},
+					{
+						"name": "ProcedureCode",
+						"type": "String"
+					},
+					{
+						"name": "ICDCode",
+						"type": "String"
+					},
+					{
+						"name": "LineOfBusiness",
+						"type": "String"
+					},
+					{
+						"name": "MedicaidID",
+						"type": "String"
+					},
+					{
+						"name": "MedicareID",
+						"type": "String"
+					},
+					{
+						"name": "InsertDate",
+						"type": "String"
+					},
+					{
+						"name": "ModifiedDate",
+						"type": "String"
+					}
+				]
+			},
+			"dependsOn": []
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/hosb_transactions_db')]",
+			"type": "Microsoft.DataFactory/factories/datasets",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"linkedServiceName": {
+					"referenceName": "AzureSqlDatabase1_hosb_ls",
+					"type": "LinkedServiceReference"
+				},
+				"folder": {
+					"name": "hospital-b"
+				},
+				"annotations": [],
+				"type": "AzureSqlTable",
+				"schema": [
+					{
+						"name": "DeptID",
+						"type": "nvarchar"
+					},
+					{
+						"name": "Name",
+						"type": "nvarchar"
+					}
+				],
+				"typeProperties": {
+					"schema": "dbo",
+					"table": "transactions"
+				}
+			},
+			"dependsOn": []
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/hc_adb_ls')]",
+			"type": "Microsoft.DataFactory/factories/linkedServices",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"annotations": [],
+				"type": "AzureDatabricks",
+				"typeProperties": {
+					"domain": "https://adb-2390693572572844.4.azuredatabricks.net",
+					"accessToken": {
+						"type": "AzureKeyVaultSecret",
+						"store": {
+							"referenceName": "hc_kv_ls",
+							"type": "LinkedServiceReference"
+						},
+						"secretName": "azure-databricks-kv-pat"
+					},
+					"existingClusterId": "[parameters('hc_adb_ls_properties_typeProperties_existingClusterId')]"
+				}
+			},
+			"dependsOn": []
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/Bronze_to_Silver_to_Gold_pl')]",
+			"type": "Microsoft.DataFactory/factories/pipelines",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"activities": [
+					{
+						"name": "slv_patients",
+						"type": "DatabricksNotebook",
+						"dependsOn": [],
+						"policy": {
+							"timeout": "0.12:00:00",
+							"retry": 0,
+							"retryIntervalInSeconds": 30,
+							"secureOutput": false,
+							"secureInput": false
+						},
+						"userProperties": [],
+						"typeProperties": {
+							"notebookPath": "/Users/khotazeem@gmail.com/Azure Healthcare Project/4. Silver/Patient"
+						},
+						"linkedServiceName": {
+							"referenceName": "hc_adb_ls",
+							"type": "LinkedServiceReference"
+						}
+					},
+					{
+						"name": "gold_patients",
+						"type": "DatabricksNotebook",
+						"dependsOn": [
+							{
+								"activity": "slv_patients",
+								"dependencyConditions": [
+									"Succeeded"
+								]
+							}
+						],
+						"policy": {
+							"timeout": "0.12:00:00",
+							"retry": 0,
+							"retryIntervalInSeconds": 30,
+							"secureOutput": false,
+							"secureInput": false
+						},
+						"userProperties": [],
+						"typeProperties": {
+							"notebookPath": "/Users/khotazeem@gmail.com/Azure Healthcare Project/5. Gold/dim_patient"
+						},
+						"linkedServiceName": {
+							"referenceName": "hc_adb_ls",
+							"type": "LinkedServiceReference"
+						}
+					},
+					{
+						"name": "slv_transactions",
+						"type": "DatabricksNotebook",
+						"dependsOn": [],
+						"policy": {
+							"timeout": "0.12:00:00",
+							"retry": 0,
+							"retryIntervalInSeconds": 30,
+							"secureOutput": false,
+							"secureInput": false
+						},
+						"userProperties": [],
+						"typeProperties": {
+							"notebookPath": "/Users/khotazeem@gmail.com/Azure Healthcare Project/4. Silver/Transactions"
+						},
+						"linkedServiceName": {
+							"referenceName": "hc_adb_ls",
+							"type": "LinkedServiceReference"
+						}
+					},
+					{
+						"name": "gold_transactions",
+						"type": "DatabricksNotebook",
+						"dependsOn": [
+							{
+								"activity": "slv_transactions",
+								"dependencyConditions": [
+									"Succeeded"
+								]
+							}
+						],
+						"policy": {
+							"timeout": "0.12:00:00",
+							"retry": 0,
+							"retryIntervalInSeconds": 30,
+							"secureOutput": false,
+							"secureInput": false
+						},
+						"userProperties": [],
+						"typeProperties": {
+							"notebookPath": "/Users/khotazeem@gmail.com/Azure Healthcare Project/5. Gold/fact_transaction"
+						},
+						"linkedServiceName": {
+							"referenceName": "hc_adb_ls",
+							"type": "LinkedServiceReference"
+						}
+					},
+					{
+						"name": "slv_departments",
+						"type": "DatabricksNotebook",
+						"dependsOn": [],
+						"policy": {
+							"timeout": "0.12:00:00",
+							"retry": 0,
+							"retryIntervalInSeconds": 30,
+							"secureOutput": false,
+							"secureInput": false
+						},
+						"userProperties": [],
+						"typeProperties": {
+							"notebookPath": "/Users/khotazeem@gmail.com/Azure Healthcare Project/4. Silver/Departments_F"
+						},
+						"linkedServiceName": {
+							"referenceName": "hc_adb_ls",
+							"type": "LinkedServiceReference"
+						}
+					},
+					{
+						"name": "gold_departments",
+						"type": "DatabricksNotebook",
+						"dependsOn": [
+							{
+								"activity": "slv_departments",
+								"dependencyConditions": [
+									"Succeeded"
+								]
+							}
+						],
+						"policy": {
+							"timeout": "0.12:00:00",
+							"retry": 0,
+							"retryIntervalInSeconds": 30,
+							"secureOutput": false,
+							"secureInput": false
+						},
+						"userProperties": [],
+						"typeProperties": {
+							"notebookPath": "/Users/khotazeem@gmail.com/Azure Healthcare Project/5. Gold/dim_department"
+						},
+						"linkedServiceName": {
+							"referenceName": "hc_adb_ls",
+							"type": "LinkedServiceReference"
+						}
+					},
+					{
+						"name": "slv_providers",
+						"type": "DatabricksNotebook",
+						"dependsOn": [],
+						"policy": {
+							"timeout": "0.12:00:00",
+							"retry": 0,
+							"retryIntervalInSeconds": 30,
+							"secureOutput": false,
+							"secureInput": false
+						},
+						"userProperties": [],
+						"typeProperties": {
+							"notebookPath": "/Users/khotazeem@gmail.com/Azure Healthcare Project/4. Silver/Providers_F"
+						},
+						"linkedServiceName": {
+							"referenceName": "hc_adb_ls",
+							"type": "LinkedServiceReference"
+						}
+					},
+					{
+						"name": "gold_providers",
+						"type": "DatabricksNotebook",
+						"dependsOn": [
+							{
+								"activity": "slv_providers",
+								"dependencyConditions": [
+									"Succeeded"
+								]
+							}
+						],
+						"policy": {
+							"timeout": "0.12:00:00",
+							"retry": 0,
+							"retryIntervalInSeconds": 30,
+							"secureOutput": false,
+							"secureInput": false
+						},
+						"userProperties": [],
+						"typeProperties": {
+							"notebookPath": "/Users/khotazeem@gmail.com/Azure Healthcare Project/5. Gold/dim_provider"
+						},
+						"linkedServiceName": {
+							"referenceName": "hc_adb_ls",
+							"type": "LinkedServiceReference"
+						}
+					},
+					{
+						"name": "slv_cpt_codes",
+						"type": "DatabricksNotebook",
+						"dependsOn": [
+							{
+								"activity": "bronze_cpt_codes",
+								"dependencyConditions": [
+									"Succeeded"
+								]
+							}
+						],
+						"policy": {
+							"timeout": "0.12:00:00",
+							"retry": 0,
+							"retryIntervalInSeconds": 30,
+							"secureOutput": false,
+							"secureInput": false
+						},
+						"userProperties": [],
+						"typeProperties": {
+							"notebookPath": "/Users/khotazeem@gmail.com/Azure Healthcare Project/4. Silver/CPT Codes"
+						},
+						"linkedServiceName": {
+							"referenceName": "hc_adb_ls",
+							"type": "LinkedServiceReference"
+						}
+					},
+					{
+						"name": "gold_cpt_codes",
+						"type": "DatabricksNotebook",
+						"dependsOn": [
+							{
+								"activity": "slv_cpt_codes",
+								"dependencyConditions": [
+									"Succeeded"
+								]
+							}
+						],
+						"policy": {
+							"timeout": "0.12:00:00",
+							"retry": 0,
+							"retryIntervalInSeconds": 30,
+							"secureOutput": false,
+							"secureInput": false
+						},
+						"userProperties": [],
+						"typeProperties": {
+							"notebookPath": "/Users/khotazeem@gmail.com/Azure Healthcare Project/5. Gold/dim_cpt_code"
+						},
+						"linkedServiceName": {
+							"referenceName": "hc_adb_ls",
+							"type": "LinkedServiceReference"
+						}
+					},
+					{
+						"name": "slv_icd_codes",
+						"type": "DatabricksNotebook",
+						"dependsOn": [],
+						"policy": {
+							"timeout": "0.12:00:00",
+							"retry": 0,
+							"retryIntervalInSeconds": 30,
+							"secureOutput": false,
+							"secureInput": false
+						},
+						"userProperties": [],
+						"typeProperties": {
+							"notebookPath": "/Users/khotazeem@gmail.com/Azure Healthcare Project/4. Silver/ICD Code"
+						},
+						"linkedServiceName": {
+							"referenceName": "hc_adb_ls",
+							"type": "LinkedServiceReference"
+						}
+					},
+					{
+						"name": "gold_icd_codes",
+						"type": "DatabricksNotebook",
+						"dependsOn": [
+							{
+								"activity": "slv_icd_codes",
+								"dependencyConditions": [
+									"Succeeded"
+								]
+							}
+						],
+						"policy": {
+							"timeout": "0.12:00:00",
+							"retry": 0,
+							"retryIntervalInSeconds": 30,
+							"secureOutput": false,
+							"secureInput": false
+						},
+						"userProperties": [],
+						"typeProperties": {
+							"notebookPath": "/Users/khotazeem@gmail.com/Azure Healthcare Project/5. Gold/dim_icd_code"
+						},
+						"linkedServiceName": {
+							"referenceName": "hc_adb_ls",
+							"type": "LinkedServiceReference"
+						}
+					},
+					{
+						"name": "slv_npi",
+						"type": "DatabricksNotebook",
+						"dependsOn": [],
+						"policy": {
+							"timeout": "0.12:00:00",
+							"retry": 0,
+							"retryIntervalInSeconds": 30,
+							"secureOutput": false,
+							"secureInput": false
+						},
+						"userProperties": [],
+						"typeProperties": {
+							"notebookPath": "/Users/khotazeem@gmail.com/Azure Healthcare Project/4. Silver/NPI"
+						},
+						"linkedServiceName": {
+							"referenceName": "hc_adb_ls",
+							"type": "LinkedServiceReference"
+						}
+					},
+					{
+						"name": "gold_npi",
+						"type": "DatabricksNotebook",
+						"dependsOn": [
+							{
+								"activity": "slv_npi",
+								"dependencyConditions": [
+									"Succeeded"
+								]
+							}
+						],
+						"policy": {
+							"timeout": "0.12:00:00",
+							"retry": 0,
+							"retryIntervalInSeconds": 30,
+							"secureOutput": false,
+							"secureInput": false
+						},
+						"userProperties": [],
+						"typeProperties": {
+							"notebookPath": "/Users/khotazeem@gmail.com/Azure Healthcare Project/5. Gold/dim_npi"
+						},
+						"linkedServiceName": {
+							"referenceName": "hc_adb_ls",
+							"type": "LinkedServiceReference"
+						}
+					},
+					{
+						"name": "slv_claims",
+						"type": "DatabricksNotebook",
+						"dependsOn": [
+							{
+								"activity": "bronze_claims",
+								"dependencyConditions": [
+									"Succeeded"
+								]
+							}
+						],
+						"policy": {
+							"timeout": "0.12:00:00",
+							"retry": 0,
+							"retryIntervalInSeconds": 30,
+							"secureOutput": false,
+							"secureInput": false
+						},
+						"userProperties": [],
+						"typeProperties": {
+							"notebookPath": "/Users/khotazeem@gmail.com/Azure Healthcare Project/4. Silver/Claims"
+						},
+						"linkedServiceName": {
+							"referenceName": "hc_adb_ls",
+							"type": "LinkedServiceReference"
+						}
+					},
+					{
+						"name": "slv_encounters",
+						"type": "DatabricksNotebook",
+						"dependsOn": [],
+						"policy": {
+							"timeout": "0.12:00:00",
+							"retry": 0,
+							"retryIntervalInSeconds": 30,
+							"secureOutput": false,
+							"secureInput": false
+						},
+						"userProperties": [],
+						"typeProperties": {
+							"notebookPath": "/Users/khotazeem@gmail.com/Azure Healthcare Project/4. Silver/Encounters"
+						},
+						"linkedServiceName": {
+							"referenceName": "hc_adb_ls",
+							"type": "LinkedServiceReference"
+						}
+					},
+					{
+						"name": "bronze_claims",
+						"type": "DatabricksNotebook",
+						"dependsOn": [],
+						"policy": {
+							"timeout": "0.12:00:00",
+							"retry": 0,
+							"retryIntervalInSeconds": 30,
+							"secureOutput": false,
+							"secureInput": false
+						},
+						"userProperties": [],
+						"typeProperties": {
+							"notebookPath": "/Users/khotazeem@gmail.com/Azure Healthcare Project/3. Bronze/Claims"
+						},
+						"linkedServiceName": {
+							"referenceName": "hc_adb_ls",
+							"type": "LinkedServiceReference"
+						}
+					},
+					{
+						"name": "bronze_cpt_codes",
+						"type": "DatabricksNotebook",
+						"dependsOn": [],
+						"policy": {
+							"timeout": "0.12:00:00",
+							"retry": 0,
+							"retryIntervalInSeconds": 30,
+							"secureOutput": false,
+							"secureInput": false
+						},
+						"userProperties": [],
+						"typeProperties": {
+							"notebookPath": "/Users/khotazeem@gmail.com/Azure Healthcare Project/3. Bronze/CPT Codes"
+						},
+						"linkedServiceName": {
+							"referenceName": "hc_adb_ls",
+							"type": "LinkedServiceReference"
+						}
+					}
+				],
+				"policy": {
+					"elapsedTimeMetric": {}
+				},
+				"annotations": [],
+				"lastPublishTime": "2025-01-25T12:43:38Z"
+			},
+			"dependsOn": [
+				"[concat(variables('factoryId'), '/linkedServices/hc_adb_ls')]"
+			]
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/EMR_data_copy')]",
+			"type": "Microsoft.DataFactory/factories/pipelines",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"activities": [
+					{
+						"name": "hosa_departments",
+						"description": "",
+						"type": "Copy",
+						"dependsOn": [],
+						"policy": {
+							"timeout": "0.12:00:00",
+							"retry": 0,
+							"retryIntervalInSeconds": 30,
+							"secureOutput": false,
+							"secureInput": false
+						},
+						"userProperties": [],
+						"typeProperties": {
+							"source": {
+								"type": "DelimitedTextSource",
+								"storeSettings": {
+									"type": "AzureBlobStorageReadSettings",
+									"recursive": true,
+									"enablePartitionDiscovery": false
+								},
+								"formatSettings": {
+									"type": "DelimitedTextReadSettings"
+								}
+							},
+							"sink": {
+								"type": "AzureSqlSink",
+								"preCopyScript": "TRUNCATE TABLE [dbo].[departments];\n",
+								"writeBehavior": "insert",
+								"sqlWriterUseTableLock": false,
+								"disableMetricsCollection": false
+							},
+							"enableStaging": false,
+							"translator": {
+								"type": "TabularTranslator",
+								"typeConversion": true,
+								"typeConversionSettings": {
+									"allowDataTruncation": true,
+									"treatBooleanAsNumber": false
+								}
+							}
+						},
+						"inputs": [
+							{
+								"referenceName": "hosa_departments",
+								"type": "DatasetReference",
+								"parameters": {}
+							}
+						],
+						"outputs": [
+							{
+								"referenceName": "hosa_departments_db",
+								"type": "DatasetReference",
+								"parameters": {}
+							}
+						]
+					},
+					{
+						"name": "hosa_transactions",
+						"description": "",
+						"type": "Copy",
+						"dependsOn": [],
+						"policy": {
+							"timeout": "0.12:00:00",
+							"retry": 0,
+							"retryIntervalInSeconds": 30,
+							"secureOutput": false,
+							"secureInput": false
+						},
+						"userProperties": [],
+						"typeProperties": {
+							"source": {
+								"type": "DelimitedTextSource",
+								"storeSettings": {
+									"type": "AzureBlobStorageReadSettings",
+									"recursive": true,
+									"enablePartitionDiscovery": false
+								},
+								"formatSettings": {
+									"type": "DelimitedTextReadSettings"
+								}
+							},
+							"sink": {
+								"type": "AzureSqlSink",
+								"preCopyScript": "TRUNCATE TABLE [dbo].[transactions];\n",
+								"writeBehavior": "insert",
+								"sqlWriterUseTableLock": false,
+								"disableMetricsCollection": false
+							},
+							"enableStaging": false,
+							"translator": {
+								"type": "TabularTranslator",
+								"typeConversion": true,
+								"typeConversionSettings": {
+									"allowDataTruncation": true,
+									"treatBooleanAsNumber": false
+								}
+							}
+						},
+						"inputs": [
+							{
+								"referenceName": "hosa_transactions",
+								"type": "DatasetReference",
+								"parameters": {}
+							}
+						],
+						"outputs": [
+							{
+								"referenceName": "hosa_transactions_db",
+								"type": "DatasetReference",
+								"parameters": {}
+							}
+						]
+					},
+					{
+						"name": "hosa_providers",
+						"description": "",
+						"type": "Copy",
+						"dependsOn": [],
+						"policy": {
+							"timeout": "0.12:00:00",
+							"retry": 0,
+							"retryIntervalInSeconds": 30,
+							"secureOutput": false,
+							"secureInput": false
+						},
+						"userProperties": [],
+						"typeProperties": {
+							"source": {
+								"type": "DelimitedTextSource",
+								"storeSettings": {
+									"type": "AzureBlobStorageReadSettings",
+									"recursive": true,
+									"enablePartitionDiscovery": false
+								},
+								"formatSettings": {
+									"type": "DelimitedTextReadSettings"
+								}
+							},
+							"sink": {
+								"type": "AzureSqlSink",
+								"preCopyScript": "TRUNCATE TABLE [dbo].[providers];\n",
+								"writeBehavior": "insert",
+								"sqlWriterUseTableLock": false,
+								"disableMetricsCollection": false
+							},
+							"enableStaging": false,
+							"translator": {
+								"type": "TabularTranslator",
+								"typeConversion": true,
+								"typeConversionSettings": {
+									"allowDataTruncation": true,
+									"treatBooleanAsNumber": false
+								}
+							}
+						},
+						"inputs": [
+							{
+								"referenceName": "hosa_providers",
+								"type": "DatasetReference",
+								"parameters": {}
+							}
+						],
+						"outputs": [
+							{
+								"referenceName": "hosa_providers_db",
+								"type": "DatasetReference",
+								"parameters": {}
+							}
+						]
+					},
+					{
+						"name": "hosa_patients",
+						"description": "",
+						"type": "Copy",
+						"dependsOn": [],
+						"policy": {
+							"timeout": "0.12:00:00",
+							"retry": 0,
+							"retryIntervalInSeconds": 30,
+							"secureOutput": false,
+							"secureInput": false
+						},
+						"userProperties": [],
+						"typeProperties": {
+							"source": {
+								"type": "DelimitedTextSource",
+								"storeSettings": {
+									"type": "AzureBlobStorageReadSettings",
+									"recursive": true,
+									"enablePartitionDiscovery": false
+								},
+								"formatSettings": {
+									"type": "DelimitedTextReadSettings"
+								}
+							},
+							"sink": {
+								"type": "AzureSqlSink",
+								"preCopyScript": "TRUNCATE TABLE [dbo].[patients];\n",
+								"writeBehavior": "insert",
+								"sqlWriterUseTableLock": false,
+								"disableMetricsCollection": false
+							},
+							"enableStaging": false,
+							"translator": {
+								"type": "TabularTranslator",
+								"typeConversion": true,
+								"typeConversionSettings": {
+									"allowDataTruncation": true,
+									"treatBooleanAsNumber": false
+								}
+							}
+						},
+						"inputs": [
+							{
+								"referenceName": "hosa_patients",
+								"type": "DatasetReference",
+								"parameters": {}
+							}
+						],
+						"outputs": [
+							{
+								"referenceName": "hosa_patients_db",
+								"type": "DatasetReference",
+								"parameters": {}
+							}
+						]
+					},
+					{
+						"name": "hosa_encounters",
+						"description": "",
+						"type": "Copy",
+						"dependsOn": [],
+						"policy": {
+							"timeout": "0.12:00:00",
+							"retry": 0,
+							"retryIntervalInSeconds": 30,
+							"secureOutput": false,
+							"secureInput": false
+						},
+						"userProperties": [],
+						"typeProperties": {
+							"source": {
+								"type": "DelimitedTextSource",
+								"storeSettings": {
+									"type": "AzureBlobStorageReadSettings",
+									"recursive": true,
+									"enablePartitionDiscovery": false
+								},
+								"formatSettings": {
+									"type": "DelimitedTextReadSettings"
+								}
+							},
+							"sink": {
+								"type": "AzureSqlSink",
+								"preCopyScript": "TRUNCATE TABLE [dbo].[encounters];\n",
+								"writeBehavior": "insert",
+								"sqlWriterUseTableLock": false,
+								"disableMetricsCollection": false
+							},
+							"enableStaging": false,
+							"translator": {
+								"type": "TabularTranslator",
+								"typeConversion": true,
+								"typeConversionSettings": {
+									"allowDataTruncation": true,
+									"treatBooleanAsNumber": false
+								}
+							}
+						},
+						"inputs": [
+							{
+								"referenceName": "hosa_encounters",
+								"type": "DatasetReference",
+								"parameters": {}
+							}
+						],
+						"outputs": [
+							{
+								"referenceName": "hosa_encounters_db",
+								"type": "DatasetReference",
+								"parameters": {}
+							}
+						]
+					},
+					{
+						"name": "hosb_departments",
+						"description": "",
+						"type": "Copy",
+						"dependsOn": [],
+						"policy": {
+							"timeout": "0.12:00:00",
+							"retry": 0,
+							"retryIntervalInSeconds": 30,
+							"secureOutput": false,
+							"secureInput": false
+						},
+						"userProperties": [],
+						"typeProperties": {
+							"source": {
+								"type": "DelimitedTextSource",
+								"storeSettings": {
+									"type": "AzureBlobStorageReadSettings",
+									"recursive": true,
+									"enablePartitionDiscovery": false
+								},
+								"formatSettings": {
+									"type": "DelimitedTextReadSettings"
+								}
+							},
+							"sink": {
+								"type": "AzureSqlSink",
+								"preCopyScript": "TRUNCATE TABLE [dbo].[departments];\n",
+								"writeBehavior": "insert",
+								"sqlWriterUseTableLock": false,
+								"disableMetricsCollection": false
+							},
+							"enableStaging": false,
+							"translator": {
+								"type": "TabularTranslator",
+								"typeConversion": true,
+								"typeConversionSettings": {
+									"allowDataTruncation": true,
+									"treatBooleanAsNumber": false
+								}
+							}
+						},
+						"inputs": [
+							{
+								"referenceName": "hosb_departments",
+								"type": "DatasetReference",
+								"parameters": {}
+							}
+						],
+						"outputs": [
+							{
+								"referenceName": "hosb_departments_db",
+								"type": "DatasetReference",
+								"parameters": {}
+							}
+						]
+					},
+					{
+						"name": "hosb_encounters",
+						"description": "",
+						"type": "Copy",
+						"dependsOn": [],
+						"policy": {
+							"timeout": "0.12:00:00",
+							"retry": 0,
+							"retryIntervalInSeconds": 30,
+							"secureOutput": false,
+							"secureInput": false
+						},
+						"userProperties": [],
+						"typeProperties": {
+							"source": {
+								"type": "DelimitedTextSource",
+								"storeSettings": {
+									"type": "AzureBlobStorageReadSettings",
+									"recursive": true,
+									"enablePartitionDiscovery": false
+								},
+								"formatSettings": {
+									"type": "DelimitedTextReadSettings"
+								}
+							},
+							"sink": {
+								"type": "AzureSqlSink",
+								"preCopyScript": "TRUNCATE TABLE [dbo].[encounters];\n",
+								"writeBehavior": "insert",
+								"sqlWriterUseTableLock": false,
+								"disableMetricsCollection": false
+							},
+							"enableStaging": false,
+							"translator": {
+								"type": "TabularTranslator",
+								"typeConversion": true,
+								"typeConversionSettings": {
+									"allowDataTruncation": true,
+									"treatBooleanAsNumber": false
+								}
+							}
+						},
+						"inputs": [
+							{
+								"referenceName": "hosb_encounters",
+								"type": "DatasetReference",
+								"parameters": {}
+							}
+						],
+						"outputs": [
+							{
+								"referenceName": "hosb_encounters_db",
+								"type": "DatasetReference",
+								"parameters": {}
+							}
+						]
+					},
+					{
+						"name": "hosb_patients",
+						"description": "",
+						"type": "Copy",
+						"dependsOn": [],
+						"policy": {
+							"timeout": "0.12:00:00",
+							"retry": 0,
+							"retryIntervalInSeconds": 30,
+							"secureOutput": false,
+							"secureInput": false
+						},
+						"userProperties": [],
+						"typeProperties": {
+							"source": {
+								"type": "DelimitedTextSource",
+								"storeSettings": {
+									"type": "AzureBlobStorageReadSettings",
+									"recursive": true,
+									"enablePartitionDiscovery": false
+								},
+								"formatSettings": {
+									"type": "DelimitedTextReadSettings"
+								}
+							},
+							"sink": {
+								"type": "AzureSqlSink",
+								"preCopyScript": "TRUNCATE TABLE [dbo].[patients];\n",
+								"writeBehavior": "insert",
+								"sqlWriterUseTableLock": false,
+								"disableMetricsCollection": false
+							},
+							"enableStaging": false,
+							"translator": {
+								"type": "TabularTranslator",
+								"typeConversion": true,
+								"typeConversionSettings": {
+									"allowDataTruncation": true,
+									"treatBooleanAsNumber": false
+								}
+							}
+						},
+						"inputs": [
+							{
+								"referenceName": "hosb_patients",
+								"type": "DatasetReference",
+								"parameters": {}
+							}
+						],
+						"outputs": [
+							{
+								"referenceName": "hosb_patients_db",
+								"type": "DatasetReference",
+								"parameters": {}
+							}
+						]
+					},
+					{
+						"name": "hosb_providers",
+						"description": "",
+						"type": "Copy",
+						"dependsOn": [],
+						"policy": {
+							"timeout": "0.12:00:00",
+							"retry": 0,
+							"retryIntervalInSeconds": 30,
+							"secureOutput": false,
+							"secureInput": false
+						},
+						"userProperties": [],
+						"typeProperties": {
+							"source": {
+								"type": "DelimitedTextSource",
+								"storeSettings": {
+									"type": "AzureBlobStorageReadSettings",
+									"recursive": true,
+									"enablePartitionDiscovery": false
+								},
+								"formatSettings": {
+									"type": "DelimitedTextReadSettings"
+								}
+							},
+							"sink": {
+								"type": "AzureSqlSink",
+								"preCopyScript": "TRUNCATE TABLE [dbo].[providers];\n",
+								"writeBehavior": "insert",
+								"sqlWriterUseTableLock": false,
+								"disableMetricsCollection": false
+							},
+							"enableStaging": false,
+							"translator": {
+								"type": "TabularTranslator",
+								"typeConversion": true,
+								"typeConversionSettings": {
+									"allowDataTruncation": true,
+									"treatBooleanAsNumber": false
+								}
+							}
+						},
+						"inputs": [
+							{
+								"referenceName": "hosb_providers",
+								"type": "DatasetReference",
+								"parameters": {}
+							}
+						],
+						"outputs": [
+							{
+								"referenceName": "hosb_providers_db",
+								"type": "DatasetReference",
+								"parameters": {}
+							}
+						]
+					},
+					{
+						"name": "hosb_transactions",
+						"description": "",
+						"type": "Copy",
+						"dependsOn": [],
+						"policy": {
+							"timeout": "0.12:00:00",
+							"retry": 0,
+							"retryIntervalInSeconds": 30,
+							"secureOutput": false,
+							"secureInput": false
+						},
+						"userProperties": [],
+						"typeProperties": {
+							"source": {
+								"type": "DelimitedTextSource",
+								"storeSettings": {
+									"type": "AzureBlobStorageReadSettings",
+									"recursive": true,
+									"enablePartitionDiscovery": false
+								},
+								"formatSettings": {
+									"type": "DelimitedTextReadSettings"
+								}
+							},
+							"sink": {
+								"type": "AzureSqlSink",
+								"preCopyScript": "TRUNCATE TABLE [dbo].[transactions];\n",
+								"writeBehavior": "insert",
+								"sqlWriterUseTableLock": false,
+								"disableMetricsCollection": false
+							},
+							"enableStaging": false,
+							"translator": {
+								"type": "TabularTranslator",
+								"typeConversion": true,
+								"typeConversionSettings": {
+									"allowDataTruncation": true,
+									"treatBooleanAsNumber": false
+								}
+							}
+						},
+						"inputs": [
+							{
+								"referenceName": "hosb_transactions",
+								"type": "DatasetReference",
+								"parameters": {}
+							}
+						],
+						"outputs": [
+							{
+								"referenceName": "hosb_transactions_db",
+								"type": "DatasetReference",
+								"parameters": {}
+							}
+						]
+					}
+				],
+				"policy": {
+					"elapsedTimeMetric": {}
+				},
+				"annotations": [],
+				"lastPublishTime": "2025-01-21T15:52:56Z"
+			},
+			"dependsOn": [
+				"[concat(variables('factoryId'), '/datasets/hosa_transactions_db')]",
+				"[concat(variables('factoryId'), '/datasets/hosb_departments')]",
+				"[concat(variables('factoryId'), '/datasets/hosb_departments_db')]",
+				"[concat(variables('factoryId'), '/datasets/hosb_encounters')]",
+				"[concat(variables('factoryId'), '/datasets/hosb_encounters_db')]",
+				"[concat(variables('factoryId'), '/datasets/hosb_patients')]",
+				"[concat(variables('factoryId'), '/datasets/hosb_patients_db')]",
+				"[concat(variables('factoryId'), '/datasets/hosb_providers')]",
+				"[concat(variables('factoryId'), '/datasets/hosb_providers_db')]",
+				"[concat(variables('factoryId'), '/datasets/hosb_transactions')]",
+				"[concat(variables('factoryId'), '/datasets/hosb_transactions_db')]"
+			]
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/Load_from_EMR_pl')]",
+			"type": "Microsoft.DataFactory/factories/pipelines",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"activities": [
+					{
+						"name": "If Condition2",
+						"type": "IfCondition",
+						"dependsOn": [],
+						"userProperties": [],
+						"typeProperties": {
+							"expression": {
+								"value": "@equals(pipeline().parameters.loadtype,'Full')",
+								"type": "Expression"
+							},
+							"ifFalseActivities": [
+								{
+									"name": "Fetch Logs",
+									"type": "Lookup",
+									"dependsOn": [],
+									"policy": {
+										"timeout": "0.12:00:00",
+										"retry": 0,
+										"retryIntervalInSeconds": 30,
+										"secureOutput": false,
+										"secureInput": false
+									},
+									"userProperties": [],
+									"typeProperties": {
+										"source": {
+											"type": "AzureDatabricksDeltaLakeSource",
+											"query": {
+												"value": "@concat('select coalesce(cast(max(loaddate) as date),''','1900-01-01',''') as last_fetched_date from audit.load_logs where',' data_source=''',pipeline().parameters.datasource,''' and tablename=''',pipeline().parameters.tablename,'''')\n",
+												"type": "Expression"
+											}
+										},
+										"dataset": {
+											"referenceName": "AzureDatabricksDeltaLake_ds",
+											"type": "DatasetReference",
+											"parameters": {
+												"schema_name": "skip",
+												"table_name": "skip"
+											}
+										}
+									}
+								},
+								{
+									"name": "Insert Logs IL",
+									"type": "Lookup",
+									"dependsOn": [
+										{
+											"activity": "Incremental Load",
+											"dependencyConditions": [
+												"Succeeded"
+											]
+										}
+									],
+									"policy": {
+										"timeout": "0.12:00:00",
+										"retry": 0,
+										"retryIntervalInSeconds": 30,
+										"secureOutput": false,
+										"secureInput": false
+									},
+									"userProperties": [],
+									"typeProperties": {
+										"source": {
+											"type": "AzureDatabricksDeltaLakeSource",
+											"query": {
+												"value": "@concat('insert into audit.load_logs(data_source,tablename,numberofrowscopied,watermarkcolumnname,loaddate) values (''',pipeline().parameters.datasource,''', ''',pipeline().parameters.tablename,''',''',activity('Incremental Load').output.rowscopied,''',''',pipeline().parameters.watermark,''',''',utcNow(),''')')\n",
+												"type": "Expression"
+											}
+										},
+										"dataset": {
+											"referenceName": "AzureDatabricksDeltaLake_ds",
+											"type": "DatasetReference",
+											"parameters": {
+												"schema_name": "skip",
+												"table_name": "skip"
+											}
+										}
+									}
+								},
+								{
+									"name": "Incremental Load",
+									"type": "Copy",
+									"dependsOn": [
+										{
+											"activity": "Fetch Logs",
+											"dependencyConditions": [
+												"Succeeded"
+											]
+										}
+									],
+									"policy": {
+										"timeout": "0.12:00:00",
+										"retry": 0,
+										"retryIntervalInSeconds": 30,
+										"secureOutput": false,
+										"secureInput": false
+									},
+									"userProperties": [],
+									"typeProperties": {
+										"source": {
+											"type": "AzureSqlSource",
+											"sqlReaderQuery": {
+												"value": "@concat('select *,''',pipeline().parameters.datasource,''' as datasource from ',pipeline().parameters.tablename,' where ',pipeline().parameters.watermark,' >= ''',activity('Fetch Logs').output.firstRow.last_fetched_date,'''')\n",
+												"type": "Expression"
+											},
+											"queryTimeout": "02:00:00",
+											"partitionOption": "None"
+										},
+										"sink": {
+											"type": "ParquetSink",
+											"storeSettings": {
+												"type": "AzureBlobFSWriteSettings"
+											},
+											"formatSettings": {
+												"type": "ParquetWriteSettings"
+											}
+										},
+										"enableStaging": false,
+										"translator": {
+											"type": "TabularTranslator",
+											"typeConversion": true,
+											"typeConversionSettings": {
+												"allowDataTruncation": true,
+												"treatBooleanAsNumber": false
+											}
+										}
+									},
+									"inputs": [
+										{
+											"referenceName": "EMR_generic_ds",
+											"type": "DatasetReference",
+											"parameters": {
+												"db_name": {
+													"value": "@pipeline().parameters.database",
+													"type": "Expression"
+												},
+												"schema_name": {
+													"value": "@split(pipeline().parameters.tablename,'.')[0]",
+													"type": "Expression"
+												},
+												"table_name": {
+													"value": "@split(pipeline().parameters.tablename,'.')[1]",
+													"type": "Expression"
+												}
+											}
+										}
+									],
+									"outputs": [
+										{
+											"referenceName": "adls_parquet_ds",
+											"type": "DatasetReference",
+											"parameters": {
+												"container": "bronze",
+												"file_path": {
+													"value": "@pipeline().parameters.targetpath",
+													"type": "Expression"
+												},
+												"file_name": {
+													"value": "@split(pipeline().parameters.tablename,'.')[1]",
+													"type": "Expression"
+												}
+											}
+										}
+									]
+								}
+							],
+							"ifTrueActivities": [
+								{
+									"name": "Full_Load",
+									"type": "Copy",
+									"dependsOn": [],
+									"policy": {
+										"timeout": "0.12:00:00",
+										"retry": 0,
+										"retryIntervalInSeconds": 30,
+										"secureOutput": false,
+										"secureInput": false
+									},
+									"userProperties": [],
+									"typeProperties": {
+										"source": {
+											"type": "AzureSqlSource",
+											"sqlReaderQuery": {
+												"value": "@concat('select *,''', pipeline().parameters.datasource,''' as datasource from ', pipeline().parameters.tablename)",
+												"type": "Expression"
+											},
+											"queryTimeout": "02:00:00",
+											"partitionOption": "None"
+										},
+										"sink": {
+											"type": "ParquetSink",
+											"storeSettings": {
+												"type": "AzureBlobFSWriteSettings"
+											},
+											"formatSettings": {
+												"type": "ParquetWriteSettings"
+											}
+										},
+										"enableStaging": false,
+										"translator": {
+											"type": "TabularTranslator",
+											"typeConversion": true,
+											"typeConversionSettings": {
+												"allowDataTruncation": true,
+												"treatBooleanAsNumber": false
+											}
+										}
+									},
+									"inputs": [
+										{
+											"referenceName": "EMR_generic_ds",
+											"type": "DatasetReference",
+											"parameters": {
+												"db_name": {
+													"value": "@pipeline().parameters.database",
+													"type": "Expression"
+												},
+												"schema_name": {
+													"value": "@split(pipeline().parameters.tablename,'.')[0]",
+													"type": "Expression"
+												},
+												"table_name": {
+													"value": "@split(pipeline().parameters.tablename,'.')[1]",
+													"type": "Expression"
+												}
+											}
+										}
+									],
+									"outputs": [
+										{
+											"referenceName": "adls_parquet_ds",
+											"type": "DatasetReference",
+											"parameters": {
+												"container": "bronze",
+												"file_path": {
+													"value": "@pipeline().parameters.targetpath",
+													"type": "Expression"
+												},
+												"file_name": {
+													"value": "@split(pipeline().parameters.tablename,'.')[1]",
+													"type": "Expression"
+												}
+											}
+										}
+									]
+								},
+								{
+									"name": "Insert Logs FL",
+									"type": "Lookup",
+									"dependsOn": [
+										{
+											"activity": "Full_Load",
+											"dependencyConditions": [
+												"Succeeded"
+											]
+										}
+									],
+									"policy": {
+										"timeout": "0.12:00:00",
+										"retry": 0,
+										"retryIntervalInSeconds": 30,
+										"secureOutput": false,
+										"secureInput": false
+									},
+									"userProperties": [],
+									"typeProperties": {
+										"source": {
+											"type": "AzureDatabricksDeltaLakeSource",
+											"query": {
+												"value": "@concat('insert into audit.load_logs(data_source,tablename,numberofrowscopied,watermarkcolumnname,loaddate) values (''',pipeline().parameters.datasource,''', ''',pipeline().parameters.tablename,''',''',activity('Full_Load').output.rowscopied,''',''',pipeline().parameters.watermark,''',''',utcNow(),''')')\n",
+												"type": "Expression"
+											}
+										},
+										"dataset": {
+											"referenceName": "AzureDatabricksDeltaLake_ds",
+											"type": "DatasetReference",
+											"parameters": {
+												"schema_name": "skip",
+												"table_name": "skip"
+											}
+										}
+									}
+								}
+							]
+						}
+					}
+				],
+				"policy": {
+					"elapsedTimeMetric": {}
+				},
+				"parameters": {
+					"loadtype": {
+						"type": "string"
+					},
+					"database": {
+						"type": "string"
+					},
+					"tablename": {
+						"type": "string"
+					},
+					"datasource": {
+						"type": "string"
+					},
+					"targetpath": {
+						"type": "string"
+					},
+					"watermark": {
+						"type": "string"
+					}
+				},
+				"annotations": [],
+				"lastPublishTime": "2025-01-24T15:39:03Z"
+			},
+			"dependsOn": []
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/EMR_src_to_bronze_pl')]",
+			"type": "Microsoft.DataFactory/factories/pipelines",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"activities": [
+					{
+						"name": "Lkp_EMR_Configs",
+						"type": "Lookup",
+						"dependsOn": [],
+						"policy": {
+							"timeout": "0.12:00:00",
+							"retry": 0,
+							"retryIntervalInSeconds": 30,
+							"secureOutput": false,
+							"secureInput": false
+						},
+						"userProperties": [],
+						"typeProperties": {
+							"source": {
+								"type": "DelimitedTextSource",
+								"storeSettings": {
+									"type": "AzureBlobFSReadSettings",
+									"recursive": true,
+									"enablePartitionDiscovery": false
+								},
+								"formatSettings": {
+									"type": "DelimitedTextReadSettings"
+								}
+							},
+							"dataset": {
+								"referenceName": "adls_flat_file_ds",
+								"type": "DatasetReference",
+								"parameters": {
+									"container": "configs",
+									"file_path": "emr",
+									"file_name": "load_config.csv"
+								}
+							},
+							"firstRowOnly": false
+						}
+					},
+					{
+						"name": "ForEach1",
+						"type": "ForEach",
+						"dependsOn": [
+							{
+								"activity": "Lkp_EMR_Configs",
+								"dependencyConditions": [
+									"Succeeded"
+								]
+							}
+						],
+						"userProperties": [],
+						"typeProperties": {
+							"items": {
+								"value": "@activity('Lkp_EMR_Configs').output.value\n",
+								"type": "Expression"
+							},
+							"isSequential": false,
+							"batchCount": 5,
+							"activities": [
+								{
+									"name": "File_Exists",
+									"type": "GetMetadata",
+									"dependsOn": [],
+									"policy": {
+										"timeout": "0.12:00:00",
+										"retry": 0,
+										"retryIntervalInSeconds": 30,
+										"secureOutput": false,
+										"secureInput": false
+									},
+									"userProperties": [],
+									"typeProperties": {
+										"dataset": {
+											"referenceName": "adls_parquet_ds",
+											"type": "DatasetReference",
+											"parameters": {
+												"container": "bronze",
+												"file_path": {
+													"value": "@item().targetpath",
+													"type": "Expression"
+												},
+												"file_name": {
+													"value": "@split(item().tablename,'.')[1]",
+													"type": "Expression"
+												}
+											}
+										},
+										"fieldList": [
+											"exists"
+										],
+										"storeSettings": {
+											"type": "AzureBlobFSReadSettings",
+											"recursive": true,
+											"enablePartitionDiscovery": false
+										},
+										"formatSettings": {
+											"type": "ParquetReadSettings"
+										}
+									}
+								},
+								{
+									"name": "If Condition1",
+									"type": "IfCondition",
+									"dependsOn": [
+										{
+											"activity": "File_Exists",
+											"dependencyConditions": [
+												"Succeeded"
+											]
+										}
+									],
+									"userProperties": [],
+									"typeProperties": {
+										"expression": {
+											"value": "@activity('File_Exists').output.exists\n",
+											"type": "Expression"
+										},
+										"ifTrueActivities": [
+											{
+												"name": "Archive File",
+												"type": "Copy",
+												"dependsOn": [],
+												"policy": {
+													"timeout": "0.12:00:00",
+													"retry": 0,
+													"retryIntervalInSeconds": 30,
+													"secureOutput": false,
+													"secureInput": false
+												},
+												"userProperties": [],
+												"typeProperties": {
+													"source": {
+														"type": "ParquetSource",
+														"storeSettings": {
+															"type": "AzureBlobFSReadSettings",
+															"recursive": true,
+															"enablePartitionDiscovery": false
+														},
+														"formatSettings": {
+															"type": "ParquetReadSettings"
+														}
+													},
+													"sink": {
+														"type": "ParquetSink",
+														"storeSettings": {
+															"type": "AzureBlobFSWriteSettings"
+														},
+														"formatSettings": {
+															"type": "ParquetWriteSettings"
+														}
+													},
+													"enableStaging": false,
+													"translator": {
+														"type": "TabularTranslator",
+														"typeConversion": true,
+														"typeConversionSettings": {
+															"allowDataTruncation": true,
+															"treatBooleanAsNumber": false
+														}
+													}
+												},
+												"inputs": [
+													{
+														"referenceName": "adls_parquet_ds",
+														"type": "DatasetReference",
+														"parameters": {
+															"container": "bronze",
+															"file_path": {
+																"value": "@item().targetpath",
+																"type": "Expression"
+															},
+															"file_name": "@split(item().tablename,'.')[1]"
+														}
+													}
+												],
+												"outputs": [
+													{
+														"referenceName": "adls_parquet_ds",
+														"type": "DatasetReference",
+														"parameters": {
+															"container": "bronze",
+															"file_path": {
+																"value": "@concat(item().targetpath,'/archive/',formatDateTime(utcNow(),'yyyy'),'/',formatDateTime(utcNow(),'%M'),'/',formatDateTime(utcNow(),'%d'))",
+																"type": "Expression"
+															},
+															"file_name": "@split(item().tablename,'.')[1]"
+														}
+													}
+												]
+											}
+										]
+									}
+								},
+								{
+									"name": "If Condition3",
+									"type": "IfCondition",
+									"dependsOn": [
+										{
+											"activity": "If Condition1",
+											"dependencyConditions": [
+												"Succeeded"
+											]
+										}
+									],
+									"userProperties": [],
+									"typeProperties": {
+										"expression": {
+											"value": "@equals(item().is_active, '1')",
+											"type": "Expression"
+										},
+										"ifTrueActivities": [
+											{
+												"name": "Execute Pipeline",
+												"type": "ExecutePipeline",
+												"dependsOn": [],
+												"policy": {
+													"secureInput": false
+												},
+												"userProperties": [],
+												"typeProperties": {
+													"pipeline": {
+														"referenceName": "Load_from_EMR_pl",
+														"type": "PipelineReference"
+													},
+													"waitOnCompletion": true,
+													"parameters": {
+														"loadtype": {
+															"value": "@item().loadtype",
+															"type": "Expression"
+														},
+														"database": {
+															"value": "@item().database",
+															"type": "Expression"
+														},
+														"tablename": {
+															"value": "@item().tablename",
+															"type": "Expression"
+														},
+														"datasource": {
+															"value": "@item().datasource",
+															"type": "Expression"
+														},
+														"targetpath": {
+															"value": "@item().targetpath",
+															"type": "Expression"
+														},
+														"watermark": {
+															"value": "@item().watermark",
+															"type": "Expression"
+														}
+													}
+												}
+											}
+										]
+									}
+								}
+							]
+						}
+					}
+				],
+				"policy": {
+					"elapsedTimeMetric": {}
+				},
+				"annotations": [],
+				"lastPublishTime": "2025-01-24T15:23:03Z"
+			},
+			"dependsOn": [
+				"[concat(variables('factoryId'), '/pipelines/Load_from_EMR_pl')]"
+			]
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/hc_end_to_end_pl')]",
+			"type": "Microsoft.DataFactory/factories/pipelines",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"activities": [
+					{
+						"name": "Execute Pipeline 1",
+						"type": "ExecutePipeline",
+						"dependsOn": [],
+						"policy": {
+							"secureInput": false
+						},
+						"userProperties": [],
+						"typeProperties": {
+							"pipeline": {
+								"referenceName": "EMR_src_to_bronze_pl",
+								"type": "PipelineReference"
+							},
+							"waitOnCompletion": true,
+							"parameters": {}
+						}
+					},
+					{
+						"name": "Execute Pipeline 2",
+						"type": "ExecutePipeline",
+						"dependsOn": [
+							{
+								"activity": "Execute Pipeline 1",
+								"dependencyConditions": [
+									"Succeeded"
+								]
+							}
+						],
+						"policy": {
+							"secureInput": false
+						},
+						"userProperties": [],
+						"typeProperties": {
+							"pipeline": {
+								"referenceName": "Bronze_to_Silver_to_Gold_pl",
+								"type": "PipelineReference"
+							},
+							"waitOnCompletion": true,
+							"parameters": {}
+						}
+					}
+				],
+				"policy": {
+					"elapsedTimeMetric": {}
+				},
+				"annotations": [],
+				"lastPublishTime": "2025-01-25T12:43:39Z"
+			},
+			"dependsOn": [
+				"[concat(variables('factoryId'), '/pipelines/EMR_src_to_bronze_pl')]",
+				"[concat(variables('factoryId'), '/pipelines/Bronze_to_Silver_to_Gold_pl')]"
+			]
+		}
+	]
+}
