@@ -68,7 +68,7 @@ RCM is the process hospitals use to manage the financial aspects from patient ap
 │   └── etl_pipeline.py  # ETL pipeline for data transformation
 │
 └── README.md            # Project documentation
-
+```
 
 ## 🔄 Data Flow Pipeline
 
@@ -125,7 +125,7 @@ RCM is the process hospitals use to manage the financial aspects from patient ap
    ```bash
    git clone https://github.com/your-repo/healthcare-rcm-data-project.git
    cd healthcare-rcm-data-project
-
+   
 
 2. Configure your Azure services, including:
    - **Azure Data Lake Storage Gen2**
