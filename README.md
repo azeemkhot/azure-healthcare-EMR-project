@@ -58,15 +58,15 @@ RCM is the process hospitals use to manage the financial aspects from patient ap
 ```bash
 /project-root
 │
-├── Setup/                 # Contains SQL code for creating databases and audit table in Databricks
+├── 1. Setup/                 # Contains SQL code for creating databases and audit table in Databricks
 │
-├── API_Extracts/           # Contains Python code for extracting data from public APIs
+├── 2. API_Extracts/           # Contains Python code for extracting data from public APIs
 │
-├── Bronze/                 # PySpark code for processing data in the Bronze layer
+├── 3. Bronze/                 # PySpark code for processing data in the Bronze layer
 │
-├── Silver/                 # PySpark code for processing data in the Silver layer
+├── 4. Silver/                 # PySpark code for processing data in the Silver layer
 │
-├── Gold/                   # PySpark code for processing data in the Gold layer
+├── 5. Gold/                   # PySpark code for processing data in the Gold layer
 │
 ├── Data_Factory/           # Data Factory resources(Linked Services, Datasets, Pipelines)
 │
