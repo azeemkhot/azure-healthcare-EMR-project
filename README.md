@@ -1,4 +1,4 @@
-# Healthcare Revenue Cycle Management (RCM) Data Engineering Project
+# Healthcare Revenue Management Data Engineering Project
 
 This project demonstrates the implementation of a modern data engineering pipeline for a healthcare Revenue Cycle Management (RCM) system using Azure Data Engineering services and the Medallion Architecture.
 
