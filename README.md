@@ -1,4 +1,4 @@
-# Healthcare Revenue Management Data Engineering Project
+# Healthcare Revenue Management (Azure Data Engineering Project)
 
 This project demonstrates the implementation of a modern data engineering pipeline for a Healthcare Revenue Cycle Management (RCM) system using Azure Data Engineering services and the Databricks Medallion Architecture.
 
