@@ -103,7 +103,7 @@
 						},
 						"userProperties": [],
 						"typeProperties": {
-							"notebookPath": "/Users/khotazeem@gmail.com/Azure Healthcare Project/4. Silver/Patient"
+							"notebookPath": "/Users/khotazeem@gmail.com/Azure Healthcare Project/azure-healthcare-EMR-project/4. Silver/Patient"
 						},
 						"linkedServiceName": {
 							"referenceName": "hc_adb_ls",
@@ -130,7 +130,7 @@
 						},
 						"userProperties": [],
 						"typeProperties": {
-							"notebookPath": "/Users/khotazeem@gmail.com/Azure Healthcare Project/5. Gold/dim_patient"
+							"notebookPath": "/Users/khotazeem@gmail.com/Azure Healthcare Project/azure-healthcare-EMR-project/5. Gold/dim_patient"
 						},
 						"linkedServiceName": {
 							"referenceName": "hc_adb_ls",
@@ -150,7 +150,7 @@
 						},
 						"userProperties": [],
 						"typeProperties": {
-							"notebookPath": "/Users/khotazeem@gmail.com/Azure Healthcare Project/4. Silver/Transactions"
+							"notebookPath": "/Users/khotazeem@gmail.com/Azure Healthcare Project/azure-healthcare-EMR-project/4. Silver/Transactions"
 						},
 						"linkedServiceName": {
 							"referenceName": "hc_adb_ls",
@@ -177,7 +177,7 @@
 						},
 						"userProperties": [],
 						"typeProperties": {
-							"notebookPath": "/Users/khotazeem@gmail.com/Azure Healthcare Project/5. Gold/fact_transaction"
+							"notebookPath": "/Users/khotazeem@gmail.com/Azure Healthcare Project/azure-healthcare-EMR-project/5. Gold/fact_transaction"
 						},
 						"linkedServiceName": {
 							"referenceName": "hc_adb_ls",
@@ -197,7 +197,7 @@
 						},
 						"userProperties": [],
 						"typeProperties": {
-							"notebookPath": "/Users/khotazeem@gmail.com/Azure Healthcare Project/4. Silver/Departments_F"
+							"notebookPath": "/Users/khotazeem@gmail.com/Azure Healthcare Project/azure-healthcare-EMR-project/4. Silver/Departments_F"
 						},
 						"linkedServiceName": {
 							"referenceName": "hc_adb_ls",
@@ -224,7 +224,7 @@
 						},
 						"userProperties": [],
 						"typeProperties": {
-							"notebookPath": "/Users/khotazeem@gmail.com/Azure Healthcare Project/5. Gold/dim_department"
+							"notebookPath": "/Users/khotazeem@gmail.com/Azure Healthcare Project/azure-healthcare-EMR-project/5. Gold/dim_department"
 						},
 						"linkedServiceName": {
 							"referenceName": "hc_adb_ls",
@@ -244,7 +244,7 @@
 						},
 						"userProperties": [],
 						"typeProperties": {
-							"notebookPath": "/Users/khotazeem@gmail.com/Azure Healthcare Project/4. Silver/Providers_F"
+							"notebookPath": "/Users/khotazeem@gmail.com/Azure Healthcare Project/azure-healthcare-EMR-project/4. Silver/Providers_F"
 						},
 						"linkedServiceName": {
 							"referenceName": "hc_adb_ls",
@@ -271,7 +271,7 @@
 						},
 						"userProperties": [],
 						"typeProperties": {
-							"notebookPath": "/Users/khotazeem@gmail.com/Azure Healthcare Project/5. Gold/dim_provider"
+							"notebookPath": "/Users/khotazeem@gmail.com/Azure Healthcare Project/azure-healthcare-EMR-project/5. Gold/dim_provider"
 						},
 						"linkedServiceName": {
 							"referenceName": "hc_adb_ls",
@@ -298,7 +298,7 @@
 						},
 						"userProperties": [],
 						"typeProperties": {
-							"notebookPath": "/Users/khotazeem@gmail.com/Azure Healthcare Project/4. Silver/CPT Codes"
+							"notebookPath": "/Users/khotazeem@gmail.com/Azure Healthcare Project/azure-healthcare-EMR-project/4. Silver/CPT Codes"
 						},
 						"linkedServiceName": {
 							"referenceName": "hc_adb_ls",
@@ -325,7 +325,7 @@
 						},
 						"userProperties": [],
 						"typeProperties": {
-							"notebookPath": "/Users/khotazeem@gmail.com/Azure Healthcare Project/5. Gold/dim_cpt_code"
+							"notebookPath": "/Users/khotazeem@gmail.com/Azure Healthcare Project/azure-healthcare-EMR-project/5. Gold/dim_cpt_code"
 						},
 						"linkedServiceName": {
 							"referenceName": "hc_adb_ls",
@@ -345,7 +345,7 @@
 						},
 						"userProperties": [],
 						"typeProperties": {
-							"notebookPath": "/Users/khotazeem@gmail.com/Azure Healthcare Project/4. Silver/ICD Code"
+							"notebookPath": "/Users/khotazeem@gmail.com/Azure Healthcare Project/azure-healthcare-EMR-project/4. Silver/ICD Code"
 						},
 						"linkedServiceName": {
 							"referenceName": "hc_adb_ls",
@@ -372,7 +372,7 @@
 						},
 						"userProperties": [],
 						"typeProperties": {
-							"notebookPath": "/Users/khotazeem@gmail.com/Azure Healthcare Project/5. Gold/dim_icd_code"
+							"notebookPath": "/Users/khotazeem@gmail.com/Azure Healthcare Project/azure-healthcare-EMR-project/5. Gold/dim_icd_code"
 						},
 						"linkedServiceName": {
 							"referenceName": "hc_adb_ls",
@@ -392,7 +392,7 @@
 						},
 						"userProperties": [],
 						"typeProperties": {
-							"notebookPath": "/Users/khotazeem@gmail.com/Azure Healthcare Project/4. Silver/NPI"
+							"notebookPath": "/Users/khotazeem@gmail.com/Azure Healthcare Project/azure-healthcare-EMR-project/4. Silver/NPI"
 						},
 						"linkedServiceName": {
 							"referenceName": "hc_adb_ls",
@@ -419,7 +419,7 @@
 						},
 						"userProperties": [],
 						"typeProperties": {
-							"notebookPath": "/Users/khotazeem@gmail.com/Azure Healthcare Project/5. Gold/dim_npi"
+							"notebookPath": "/Users/khotazeem@gmail.com/Azure Healthcare Project/azure-healthcare-EMR-project/5. Gold/dim_npi"
 						},
 						"linkedServiceName": {
 							"referenceName": "hc_adb_ls",
@@ -446,7 +446,7 @@
 						},
 						"userProperties": [],
 						"typeProperties": {
-							"notebookPath": "/Users/khotazeem@gmail.com/Azure Healthcare Project/4. Silver/Claims"
+							"notebookPath": "/Users/khotazeem@gmail.com/Azure Healthcare Project/azure-healthcare-EMR-project/4. Silver/Claims"
 						},
 						"linkedServiceName": {
 							"referenceName": "hc_adb_ls",
@@ -466,7 +466,7 @@
 						},
 						"userProperties": [],
 						"typeProperties": {
-							"notebookPath": "/Users/khotazeem@gmail.com/Azure Healthcare Project/4. Silver/Encounters"
+							"notebookPath": "/Users/khotazeem@gmail.com/Azure Healthcare Project/azure-healthcare-EMR-project/4. Silver/Encounters"
 						},
 						"linkedServiceName": {
 							"referenceName": "hc_adb_ls",
@@ -486,7 +486,7 @@
 						},
 						"userProperties": [],
 						"typeProperties": {
-							"notebookPath": "/Users/khotazeem@gmail.com/Azure Healthcare Project/3. Bronze/Claims"
+							"notebookPath": "/Users/khotazeem@gmail.com/Azure Healthcare Project/azure-healthcare-EMR-project/3. Bronze/Claims"
 						},
 						"linkedServiceName": {
 							"referenceName": "hc_adb_ls",
@@ -506,7 +506,7 @@
 						},
 						"userProperties": [],
 						"typeProperties": {
-							"notebookPath": "/Users/khotazeem@gmail.com/Azure Healthcare Project/3. Bronze/CPT Codes"
+							"notebookPath": "/Users/khotazeem@gmail.com/Azure Healthcare Project/azure-healthcare-EMR-project/3. Bronze/CPT Codes"
 						},
 						"linkedServiceName": {
 							"referenceName": "hc_adb_ls",
