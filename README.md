@@ -71,7 +71,7 @@ RCM is the process hospitals use to manage the financial aspects from patient ap
 ├── Data_Factory/           # Data Factory resources(Linked Services, Datasets, Pipelines)
 │
 ├── Datasets/               # Data files for the project
-│   ├── EMR/                # EMR data
+│   ├── EMR/                # EMR data for hospital-a & hospital-b
 │   ├── Claims/             # Claims data
 │   ├── CPTCodes/           # CPT codes data
 │   └── load_config.csv     # Metadata-driven configuration for the pipeline
