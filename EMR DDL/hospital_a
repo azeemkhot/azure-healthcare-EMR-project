@@ -1,4 +1,4 @@
--- For database trendytech-hospital-a:
+-- For database healthcare-emr-hospital-a:
 
 -- 1. Departments Table:
 
@@ -23,7 +23,7 @@ CREATE TABLE dbo.encounters (
     CONSTRAINT PK_encounters PRIMARY KEY (EncounterID)
 );
 
--- 3. Hospital1_Patient_Data Table:
+-- 3. Patients Table:
 
 CREATE TABLE dbo.patients (
     PatientID nvarchar(50) NOT NULL,
