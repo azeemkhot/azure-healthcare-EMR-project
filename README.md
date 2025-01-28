@@ -1,6 +1,6 @@
 # Healthcare Revenue Management Data Engineering Project
 
-This project demonstrates the implementation of a modern data engineering pipeline for a healthcare Revenue Cycle Management (RCM) system using Azure Data Engineering services and the Medallion Architecture.
+This project demonstrates the implementation of a modern data engineering pipeline for a Healthcare Revenue Cycle Management (RCM) system using Azure Data Engineering services and the Databricks Medallion Architecture.
 
 The solution involves the end-to-end data processing from data ingestion to transformation and storage in fact and dimension tables to support business analytics and reporting.
 
@@ -8,7 +8,7 @@ The solution involves the end-to-end data processing from data ingestion to tran
 
 ## 📚 Domain Overview: Healthcare Revenue Cycle Management (RCM)
 
-RCM is the process hospitals use to manage the financial aspects from patient appointment scheduling to final payment collection.
+RCM is the process hospitals use to manage the financial aspects from patient appointment, scheduling to final payment collection.
 
 ### Key Steps in the RCM Process:
 1. **Patient Visit:** Collection of patient and insurance details to determine the payer (insurance or patient).
@@ -22,8 +22,8 @@ RCM is the process hospitals use to manage the financial aspects from patient ap
 
 ## 📊 Project Objectives
 
-- Build a robust ETL pipeline using Azure resources to transform healthcare data.
-- Create **fact** and **dimension tables** to help the reporting team generate meaningful KPIs for RCM.
+- Build a robust ETL pipeline using Azure resources to transform healthcare data for a hospital.
+- Create **Fact** and **Dimension tables** to help the reporting team generate meaningful KPIs for RCM.
 - Improve analytics by transforming raw data into clean, standardized models.
 
 ---
@@ -32,14 +32,14 @@ RCM is the process hospitals use to manage the financial aspects from patient ap
 
 ### Medallion Architecture
 - **Bronze Layer:** Raw data stored in **Parquet format** as the source of truth.
-- **Silver Layer:** Data cleaning, enrichment, and application of SCD2.
-- **Gold Layer:** Aggregations and creation of **Fact** and **Dimension tables**.
+- **Silver Layer:** Data cleaning, enrichment, application of Common Data Model(CDM) and SCD2. Stored in **Delta tables**.
+- **Gold Layer:** Aggregations and creation of **Fact** and **Dimension tables**. Stored in **Delta tables**.
 
 ### Data Sources
 - **EMR Data (Azure SQL Database):** Patients, providers, departments, transactions, and encounters.
-- **Claims Data (Flat files):** Monthly claims data stored in Azure Data Lake.
-- **NPI Data (Public API):** National Provider Identifier details.
-- **ICD Codes (Public API):** Standardized system for diagnosis codes.
+- **Claims Data (Flat files):** Monthly claims data stored in Azure Data Lake Storage(ADLS).
+- **NPI Data (Public API):** National Provider Identifier(NPI) is a unique identification number for covered health care providers.
+- **ICD Codes (Public API):** Standardized system used by health care providers to map diagnosis code and description.
 
 ---
 
@@ -58,28 +58,40 @@ RCM is the process hospitals use to manage the financial aspects from patient ap
 ```bash
 /project-root
 │
-├── notebooks/
-│   └── Azure_Data_Engineering_Project.ipynb  # Jupyter notebook with data processing logic
+├── Setup/                 # Contains SQL code for creating databases and audit table in Databricks
 │
-├── configs/
-│   └── load_config.csv  # Metadata-driven configuration for pipeline
+├── API_Extracts/           # Contains Python code for extracting data from public APIs
 │
-├── src/
-│   └── etl_pipeline.py  # ETL pipeline for data transformation
+├── Bronze/                 # PySpark code for processing data in the Bronze layer
 │
-└── README.md            # Project documentation
+├── Silver/                 # PySpark code for processing data in the Silver layer
+│
+├── Gold/                   # PySpark code for processing data in the Gold layer
+│
+├── Data_Factory/           # Data Factory resources(Linked Services, Datasets, Pipelines)
+│
+├── Datasets/               # Data files for the project
+│   ├── EMR/                # EMR data
+│   ├── Claims/             # Claims data
+│   ├── CPTCodes/           # CPT codes data
+│   └── load_config.csv     # Metadata-driven configuration for the pipeline
+│
+├── EMR_DDL/                # SQL code for creating databases in Azure SQL
+│
+└── README.md               # Project documentation
+
 ```
 
 ## 🔄 Data Flow Pipeline
 
-1. **Landing Layer:** Flat files are stored in Azure Data Lake Gen2.
+1. **Landing Layer:** Flat files are stored in ADLS Gen2.
 2. **Bronze Layer:** Data is converted to Parquet format and stored as the source of truth.
 3. **Silver Layer:** Data is cleaned, enriched, and stored in Delta tables.
    - Applied **SCD2** for patient, transaction, and encounter data.
    - Implemented **Common Data Model (CDM)** for standardization.
 4. **Gold Layer:** Aggregated data for fact and dimension tables to support business reporting.
-   - **Fact Table:** Revenue collection metrics.
-   - **Dimension Tables:** Patients, transactions, and departments.
+   - **Fact Table:** Revenue collection metrics(Transactions).
+   - **Dimension Tables:** Patients, departments, Providers, CPT & ICD Codes, NPI.
 
 ---
 
@@ -87,7 +99,7 @@ RCM is the process hospitals use to manage the financial aspects from patient ap
 
 ### Bronze to Silver Transformation
 
-- **Data Cleaning:** Removed duplicates and standardized schema.
+- **Data Cleaning:** Removed duplicates.
 - **CDM:** Common schema for consistent reporting.
 - **SCD2:** Implemented Slowly Changing Dimension Type 2 for incremental data updates.
 
@@ -112,35 +124,6 @@ RCM is the process hospitals use to manage the financial aspects from patient ap
 
 ---
 
-## 📈 KPIs for Accounts Receivable (AR) Management
-
-1. **AR > 90 days:** Percentage of overdue payments.
-2. **Days in AR:** Average number of days for payment collection.
-
----
-
-## 🚀 How to Run the Project
-
-1. Clone the repository:
-   ```bash
-   git clone https://github.com/your-repo/healthcare-rcm-data-project.git
-   cd healthcare-rcm-data-project
-   
-
-2. Configure your Azure services, including:
-   - **Azure Data Lake Storage Gen2**
-   - **Azure Databricks**
-   - **Azure Key Vault**
-   - **Azure SQL Database**
-
-3. Execute the ETL pipeline:
-   - Trigger the ADF pipeline to load data from EMR and claims sources.
-   - Process data using Databricks for transformation and aggregation.
-
-4. Analyze the results in Gold Layer fact and dimension tables.
-
----
-
 ## 🔍 Notes
 
 1. **Data Generation:**  
@@ -148,8 +131,3 @@ RCM is the process hospitals use to manage the financial aspects from patient ap
 
 2. **Data Discrepancies:**  
    Joins and data relationships may vary due to synthetic data.
-
-3. **Project Improvements:**  
-   Enhanced naming conventions and better code organization.
-
-
